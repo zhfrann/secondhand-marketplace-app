@@ -53,7 +53,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin release || true
-          git checkout -B release
+          git checkout -B release origin/release || git checkout -B release
+          git reset --hard origin/release || true
           rm -rf dist
           mkdir -p dist
 
@@ -67,7 +68,7 @@ jobs:
         run: |
           git add dist/*.jar
           git commit -m "Release jar ${GITHUB_SHA::7}" || echo "No changes to commit"
-          git push origin release
+          git push --force-with-lease origin release
 
   github-release:
     needs: build
