@@ -32,11 +32,17 @@ jobs:
       - name: Build JAR
         run: mvn -B -DskipTests package
 
+      - name: Prepare versioned JAR
+        run: |
+          mkdir -p dist
+          jar_path=$(ls target/*.jar | head -n 1)
+          cp "$jar_path" "dist/app-v0.0.${GITHUB_RUN_NUMBER}.jar"
+
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
         with:
           name: java-app-jar
-          path: target/*.jar
+          path: dist/*.jar
 
   publish-release-branch:
     needs: build
