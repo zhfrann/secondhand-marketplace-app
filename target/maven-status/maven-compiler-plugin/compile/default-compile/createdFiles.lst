@@ -1,0 +1,16 @@
+secondhand_marketplace/app/Menu.class
+secondhand_marketplace/app/App.class
+secondhand_marketplace/utils/Utils.class
+secondhand_marketplace/Komunikasi/NotifikasiInterface.class
+secondhand_marketplace/pengguna/Penawaran.class
+secondhand_marketplace/produk/Produk.class
+secondhand_marketplace/pengguna/PembeliPenjual.class
+secondhand_marketplace/Komunikasi/Notifikasi.class
+secondhand_marketplace/app/AkunManagement.class
+secondhand_marketplace/app/BarangManagement.class
+secondhand_marketplace/Komunikasi/Chat.class
+secondhand_marketplace/produk/Review.class
+secondhand_marketplace/pengguna/Pengguna.class
+secondhand_marketplace/akun/ManajerAkun.class
+secondhand_marketplace/transaksi/Pemesanan.class
+secondhand_marketplace/exception/LoginException.class
