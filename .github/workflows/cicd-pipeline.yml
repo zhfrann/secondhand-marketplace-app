@@ -6,6 +6,8 @@ on:
       - main
       - master
       - develop
+      - feature/continuous-testing
+
   pull_request:
     branches:
       - main
