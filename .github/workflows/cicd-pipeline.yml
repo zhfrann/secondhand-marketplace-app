@@ -39,7 +39,7 @@ jobs:
         run: >
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar 
           -Dsonar.projectKey=zhfrann
-          -Dsonar.organization=Zhafran
+          -Dsonar.organization=zhfrann
           -Dsonar.host.url=https://sonarcloud.io
 
       - name: Prepare versioned JAR
