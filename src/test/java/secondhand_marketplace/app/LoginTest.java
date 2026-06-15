@@ -15,7 +15,7 @@ public class LoginTest {
         ManajerAkun manajer = new ManajerAkun();
         Pengguna user = manajer.login("user1", "user1");
         assertNotNull(user);
-        assertEquals("user10", user.getUsername());
+        assertEquals("user1", user.getUsername());
     }
 
     @Test(expected = LoginException.class)
