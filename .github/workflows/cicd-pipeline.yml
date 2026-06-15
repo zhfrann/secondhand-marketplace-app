@@ -15,6 +15,7 @@ on:
 permissions:
   contents: write
   pull-requests: read
+  packages: write
 
 jobs:
   build:
@@ -37,7 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar 
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.projectKey=zhfrann
           -Dsonar.organization=zhfrann
           -Dsonar.host.url=https://sonarcloud.io
@@ -53,6 +54,39 @@ jobs:
         with:
           name: java-app-jar
           path: dist/*.jar
+
+  publish-github-packages:
+    needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK 17 for GitHub Packages
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+
+      - name: Set Maven package version
+        run: |
+          mvn -B versions:set \
+            -DnewVersion=0.0.${GITHUB_RUN_NUMBER} \
+            -DgenerateBackupPoms=false
+
+      - name: Publish package to GitHub Packages
+        run: mvn -B deploy -DskipTests
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-release-branch:
     needs: build
@@ -90,6 +124,8 @@ jobs:
     needs: build
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Download JAR Artifact
         uses: actions/download-artifact@v4
